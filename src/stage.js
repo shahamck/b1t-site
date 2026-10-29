@@ -21,7 +21,9 @@ function softGlow(ctx, x, y, R, rgb, peak) {
 export async function createStage(canvas, { reduced = false } = {}) {
   const ctx = canvas.getContext('2d');
   const img = await logoImage();
-  const state = { p: 0, mx: -1e4, my: -1e4, active: true, dirty: true };
+  const state = { p: 0, mx: -1e4, my: -1e4, active: true, visible: true, dirty: true, heroBottom: 0 };
+  // Phones and tablets draw at 30 fps; the characters only change a few times a second anyway
+  const frameGap = matchMedia('(pointer: coarse)').matches || innerWidth < 700 ? 1000 / 30 : 0;
   let W, H, dpr, CW, CH, cols, rows, ox, oy, atlas, small;
   let glyph, seed, seed2, next, logo;
   const sharp = document.createElement('canvas'), soft = document.createElement('canvas');
@@ -58,12 +60,14 @@ export async function createStage(canvas, { reduced = false } = {}) {
     const mark = smooth(0.44, 0.7, p);
     const U = small ? Math.max(W * 0.5, H * 0.3) : W * 0.5;
     const cx = W * 0.5;
-    const cy0 = H * (small ? 0.78 : 0.8);
+    // Meet below the intro text, even on short landscape screens where 80% of the height would overlap it
+    const cy0 = Math.max(H * (small ? 0.87 : 0.8), state.heroBottom + U * 0.36);
     const cy = cy0 + (H * 0.44 - cy0) * smooth(0.02, 0.4, p);
     const breathe = reduced ? 0 : Math.sin(t * 0.9) * 0.005;
 
-    // Rasterise both hands into a sharp mask (inside test) and a soft one (shading)
-    for (const [c2, blur] of [[sx, 0], [fx, small ? 1.6 : 2.2]]) {
+    // Rasterise both hands into a sharp mask (inside test) and a soft one (shading); skipped once they've faded
+    const handsOn = fade < 1;
+    if (handsOn) for (const [c2, blur] of [[sx, 0], [fx, small ? 1.6 : 2.2]]) {
       c2.setTransform(1, 0, 0, 1, 0, 0);
       c2.clearRect(0, 0, cols, rows);
       c2.filter = blur ? `blur(${blur}px)` : 'none';
@@ -71,7 +75,7 @@ export async function createStage(canvas, { reduced = false } = {}) {
       c2.setTransform(U / CW, 0, 0, U / CH, (cx - ox) / CW, (cy - oy) / CH);
       drawHands(c2, { gap: small ? 0.09 : 0.075, s: small ? 0.2 : 0.18, spread: apart * 0.75 + breathe, liftL: breathe * 0.6 + apart * 0.05, liftR: -breathe * 0.6 - apart * 0.08, carve: blur ? 0 : (CH * 0.5) / U });
     }
-    const hs = sx.getImageData(0, 0, cols, rows).data, hf = fx.getImageData(0, 0, cols, rows).data;
+    const hs = handsOn ? sx.getImageData(0, 0, cols, rows).data : null, hf = handsOn ? fx.getImageData(0, 0, cols, rows).data : null;
 
     const rect = canvas.getBoundingClientRect();
     const px = state.mx - rect.left, py = state.my - rect.top;
@@ -105,7 +109,7 @@ export async function createStage(canvas, { reduced = false } = {}) {
       if (logo[i] && seed2[i] < mark) {
         color = A0 + 5 - (seed[i] < 0.2 ? 1 : 0);
         rate = 5;
-      } else if (hs[i * 4 + 3] > 80 && seed[i] > fade) {
+      } else if (handsOn && hs[i * 4 + 3] > 80 && seed[i] > fade) {
         // Hand: soft mask height + its slope for light from the upper left
         const h = hf[i * 4 + 3] / 255;
         const gx = (c > 0 && c < cols - 1) ? (hf[(i + 1) * 4 + 3] - hf[(i - 1) * 4 + 3]) / 255 : 0;
@@ -144,18 +148,32 @@ export async function createStage(canvas, { reduced = false } = {}) {
 
   resize();
   const t0 = performance.now();
+  let last = 0;
   (function loop(now) {
     requestAnimationFrame(loop);
-    if (!state.active) return;
+    if (!state.active || !state.visible) return;
     if (reduced && !state.dirty) return;
+    if (now - last < frameGap - 2) return;
+    last = now;
     state.dirty = false;
     frame(reduced ? 0 : (now - t0) / 1000);
   })(t0);
 
   addEventListener('pointermove', (e) => { state.mx = e.clientX; state.my = e.clientY; state.dirty = true; }, { passive: true });
   document.addEventListener('pointerleave', () => { state.mx = state.my = -1e4; });
-  new ResizeObserver(resize).observe(canvas);
+  // Mobile browser bars change the height while scrolling; only rebuild for real size changes
+  let lastW = 0, lastH = 0;
+  new ResizeObserver(() => {
+    const r = canvas.getBoundingClientRect();
+    if (r.width === lastW && Math.abs(r.height - lastH) < 140) return;
+    lastW = r.width; lastH = r.height;
+    resize();
+  }).observe(canvas);
   new IntersectionObserver(([en]) => { state.active = en.isIntersecting; }).observe(canvas.parentElement);
 
-  return { set progress(v) { state.p = v; state.dirty = true; } };
+  return {
+    set progress(v) { state.p = v; state.dirty = true; },
+    set visible(v) { state.visible = v; state.dirty = true; },
+    set heroBottom(v) { state.heroBottom = v; state.dirty = true; },
+  };
 }

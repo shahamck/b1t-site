@@ -46,9 +46,12 @@ export async function createFootWord(canvas, { reduced = false } = {}) {
   }
 
   const t0 = performance.now();
+  const frameGap = matchMedia('(pointer: coarse)').matches || innerWidth < 700 ? 1000 / 30 : 0;
+  let last = 0;
   (function loop(now) {
     requestAnimationFrame(loop);
-    if (!active) return;
+    if (!active || now - last < frameGap - 2) return;
+    last = now;
     if (!start) start = now;
     frame(reduced ? 0 : (now - t0) / 1000, Math.min(1, (now - start) / 1400));
   })(t0);

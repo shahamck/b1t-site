@@ -12,4 +12,4 @@ export const projects = [
   { id: 'mintly', name: 'Mintly', title: 'Mintly — a calmer dental clinic', desc: 'Clinic site with live opening hours, services and online booking.', tags: ['Web design', 'Development'], span: 'g' },
   { id: 'subtle', name: 'subtle.', title: 'subtle. — a storefront for handmade furniture', desc: 'Concept e-commerce for Subtle Concepts, built on their real catalogue.', tags: ['E-commerce', 'Concept'], span: 'g' },
   { id: 'learnify', name: 'Learnify', title: 'Learnify — find the right course', desc: 'Landing page for an online-courses platform, with illustrated recommendations.', tags: ['Landing page', 'Web design'], span: 'g' },
-].map((p) => ({ ...p, url: live(p.id), repo: repo(p.id), img: `./work/${p.id}.jpg` }));
+].map((p) => ({ ...p, url: live(p.id), repo: repo(p.id), img: `./work/${p.id}-1200.webp`, small: `./work/${p.id}-640.webp` }));

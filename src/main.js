@@ -1,6 +1,4 @@
 import '@fontsource-variable/inter-tight';
-import '@fontsource-variable/inter-tight/wght-italic.css';
-import '@fontsource-variable/geist-mono';
 import './style.css';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -11,6 +9,7 @@ import { createFootWord } from './footword.js';
 import { scramble, bindHoverScramble } from './scramble.js';
 import { projects } from './covers.js';
 import { logoSVG } from './logo.js';
+import { MONO } from './glyphs.js';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 const $ = (s, r = document) => r.querySelector(s);
@@ -20,6 +19,7 @@ const fine = matchMedia('(pointer: fine)').matches;
 history.scrollRestoration = 'manual';
 
 $$('[data-logo]').forEach((el) => { el.innerHTML = logoSVG(); });
+if (!fine) $$('[data-touch]').forEach((el) => { el.textContent = el.dataset.touch; });
 
 // ---------- Smooth scroll ----------
 const lenis = new Lenis({ lerp: reduced ? 1 : 0.1, smoothWheel: !reduced });
@@ -45,7 +45,7 @@ const ext = 'target="_blank" rel="noopener"';
 list.innerHTML = projects.map((p, i) => `
   <article class="proj proj--${p.span}" data-id="${p.id}">
     <a class="proj__media" href="${p.url}" ${ext} tabindex="-1" aria-hidden="true">
-      <div class="proj__img"><img src="${p.img}" alt="" loading="lazy" decoding="async" /></div>
+      <picture class="proj__img"><source media="(max-width: 760px)" srcset="${p.small}" /><img src="${p.img}" alt="" loading="lazy" decoding="async" /></picture>
       <canvas class="proj__ascii"></canvas>
     </a>
     <div class="proj__meta">
@@ -58,7 +58,7 @@ list.innerHTML = projects.map((p, i) => `
   </article>`).join('');
 
 // ---------- Stage ----------
-// Created after the fonts load, so the glyph atlas is drawn in Geist Mono
+// Created after the fonts load, so the page doesn't reflow under it
 let stage;
 ScrollTrigger.create({ trigger: '#stage', start: 'top top', end: 'bottom bottom', onUpdate: (s) => { if (stage) stage.progress = s.progress; } });
 
@@ -113,7 +113,7 @@ function stageScroll() {
   gsap.to('.hero .wrap', { yPercent: -18, opacity: 0, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom 25%', scrub: true } });
   gsap.fromTo('.spark__copy', { opacity: 0, y: 40 }, { opacity: 1, y: 0, ease: 'none', scrollTrigger: { trigger: '.spark__copy', start: 'top 100%', end: 'top 72%', scrub: true } });
   // As the definition arrives, the logo and every stray character fade out, leaving plain blue behind it
-  gsap.fromTo('#ascii', { opacity: 1 }, { opacity: 0, ease: 'none', scrollTrigger: { trigger: '.spark__copy', start: 'top 100%', end: 'top 84%', scrub: true } });
+  gsap.fromTo('#ascii', { opacity: 1 }, { opacity: 0, ease: 'none', onUpdate() { if (stage) stage.visible = this.progress() < 0.99; }, scrollTrigger: { trigger: '.spark__copy', start: 'top 100%', end: 'top 84%', scrub: true } });
 }
 
 // ---------- Header ----------
@@ -255,7 +255,7 @@ function work() {
       if (rad < 2 && target === 0) { raf = 0; return; }
       const c0 = Math.max(0, ((mx - rad) / CW) | 0), c1 = Math.min(cols - 1, ((mx + rad) / CW) | 0);
       const r0 = Math.max(0, ((my - rad) / CH) | 0), r1 = Math.min(rows - 1, ((my + rad) / CH) | 0);
-      ctx.font = '500 11px "Geist Mono Variable", monospace';
+      ctx.font = `500 11px ${MONO}`;
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       for (let r = r0; r <= r1; r++) for (let c = c0; c <= c1; c++) {
         const x = c * CW + CW / 2, y = r * CH + CH / 2;
@@ -303,7 +303,7 @@ function work() {
   $$('.proj').forEach((card) => {
     card.addEventListener('mouseenter', () => {
       if (list.dataset.view !== 'list') return;
-      peek.innerHTML = `<img src="${projects.find((p) => p.id === card.dataset.id).img}" alt="" />`;
+      peek.innerHTML = `<img src="${projects.find((p) => p.id === card.dataset.id).small}" alt="" />`;
       peek.classList.add('is-on');
     });
     card.addEventListener('mouseleave', () => peek.classList.remove('is-on'));
@@ -400,10 +400,11 @@ function cursor() {
   await Promise.all([
     document.fonts.load('400 16px "Inter Tight Variable"'),
     document.fonts.load('800 100px "Inter Tight Variable"'),
-    document.fonts.load('italic 500 16px "Inter Tight Variable"'),
-    document.fonts.load('500 12px "Geist Mono Variable"'),
   ]).catch(() => {});
   stage = await createStage($('#ascii'), { reduced });
+  const measureHero = () => { stage.heroBottom = $('.hero__row').getBoundingClientRect().bottom + scrollY; };
+  measureHero();
+  addEventListener('resize', measureHero);
   lines(); stageScroll(); header(); manifesto(); marquee(); icons(); work(); process(); voices(); contact(); cursor();
   bindHoverScramble();
   ScrollTrigger.refresh();

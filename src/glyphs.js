@@ -1,6 +1,7 @@
 // Shared glyph atlas: every character pre-rendered once per colour, then blitted with drawImage.
 export const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-export const MONO = '"Geist Mono Variable", ui-monospace, monospace';
+// System monospace: no font download for the character art
+export const MONO = 'ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace';
 
 const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
 const mix = (a, b, t) => {
