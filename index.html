@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>B1T Studios — Web design &amp; development</title>
+  <meta name="description" content="B1T Studios designs and develops fast, considered websites with a human touch." />
+  <meta name="theme-color" content="#2458f2" />
+  <link rel="icon" href="./favicon.svg" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- Loader: a line types itself, the last phrase scrambles into a highlight, then the curtain lifts -->
+  <div class="loader t-blue" id="loader" aria-hidden="true">
+    <p class="loader__line"><span id="loaderText"></span><span class="loader__acc" id="loaderAcc"></span><span class="loader__caret"></span></p>
+    <span class="loader__count mono" id="loaderCount">000</span>
+  </div>
+
+  <!-- Cursor -->
+  <div class="cursor" id="cursor" aria-hidden="true"><span class="cursor__dot"></span><span class="cursor__ring"></span></div>
+
+  <!-- Header -->
+  <header class="hdr" id="hdr">
+    <div class="hdr__clock mono"><span class="hdr__pulse"></span><span id="clock">--:--</span> <span class="hdr__tz">Local</span></div>
+    <nav class="hdr__pill" aria-label="Primary">
+      <a class="hdr__logo" href="#top" aria-label="B1T, back to top" data-logo></a>
+      <span class="hdr__label mono" id="hdrLabel">B1T Studios</span>
+      <button class="hdr__burger" id="burger" type="button" aria-expanded="false" aria-controls="menu"><span></span><span></span><span class="sr">Menu</span></button>
+    </nav>
+    <a class="hdr__avail mono" href="#contact"><span class="hdr__dot"></span>Booking Q1 ’27</a>
+  </header>
+
+  <!-- Menu overlay -->
+  <div class="menu t-blue" id="menu" aria-hidden="true">
+    <div class="menu__grid">
+      <nav class="menu__links" aria-label="Menu">
+        <a href="#manifesto" data-menu><i class="mono">01</i><span>Manifesto</span></a>
+        <a href="#services" data-menu><i class="mono">02</i><span>Services</span></a>
+        <a href="#work" data-menu><i class="mono">03</i><span>Work</span></a>
+        <a href="#process" data-menu><i class="mono">04</i><span>Process</span></a>
+        <a href="#voices" data-menu><i class="mono">05</i><span>Kind words</span></a>
+        <a href="#contact" data-menu><i class="mono">06</i><span>Contact</span></a>
+      </nav>
+      <div class="menu__side">
+        <p class="mono menu__k">Say hello</p>
+        <a class="menu__mail" href="mailto:hello@b1t.studio">hello@b1t.studio</a>
+        <p class="mono menu__k">Elsewhere</p>
+        <ul class="menu__social mono">
+          <li><a href="#" data-scramble>Instagram</a></li>
+          <li><a href="#" data-scramble>Dribbble</a></li>
+          <li><a href="#" data-scramble>LinkedIn</a></li>
+          <li><a href="#" data-scramble>Behance</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <main id="main">
+    <!-- Stage: hero + the spark that becomes the logo. The canvas sticks while both scroll past -->
+    <div class="stage t-blue" id="stage">
+      <canvas class="stage__canvas" id="ascii" aria-hidden="true"></canvas>
+
+      <section class="hero" id="top" data-label="B1T Studios">
+        <div class="wrap">
+          <h1 class="hero__title" data-lines>
+            Websites, designed &amp; built<br />
+            with a <span class="hl">human touch.</span>
+          </h1>
+          <div class="hero__row">
+            <p class="hero__lede" data-fade>B1T Studios does two things: web design and web development. We design and hand-build fast, considered websites for teams who would rather be remembered than merely seen.</p>
+            <div class="hero__cta" data-fade>
+              <a class="btn" href="#contact" data-scramble>Start a project</a>
+              <a class="link" href="#work" data-scramble>See the work</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="spark" id="spark" data-label="The spark">
+        <div class="spark__copy">
+          <p class="mono spark__k">bit <span>/bɪt/</span> noun</p>
+          <p class="spark__def">The smallest unit of digital information — <em>a single one or zero.</em> We sweat every one of them, then put a human hand on the whole thing.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Clients marquee -->
+    <section class="clients t-white" aria-label="Projects">
+      <button class="clients__pause mono" id="marqueePause" type="button" aria-pressed="false">Pause logos</button>
+      <div class="clients__track" id="marquee">
+        <ul class="clients__row">
+          <li><span class="cl cl--wide">POV:</span></li>
+          <li><span class="cl cl--light">CubeSats</span></li>
+          <li><span class="cl cl--round">NinjaPizza</span></li>
+          <li><span class="cl cl--stack">Innovative<br />Testing</span></li>
+          <li><span class="cl cl--wide">ALCOVE</span></li>
+          <li><span class="cl cl--round">TISE</span></li>
+          <li><span class="cl cl--italic">Mintly</span></li>
+          <li><span class="cl cl--light">subtle.</span></li>
+          <li><span class="cl cl--mono">Learnify</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Manifesto -->
+    <section class="manifesto t-white" id="manifesto" data-label="Manifesto">
+      <div class="wrap">
+        <p class="kicker mono"><i></i>Manifesto</p>
+        <p class="manifesto__big" id="manifestoText">We design and build websites that are <mark>considered,</mark> <mark>fast</mark> and impossible to forget. From the first sketch to the last line of code, every decision earns its place — or it doesn’t ship.</p>
+        <div class="manifesto__foot">
+          <div class="manifesto__stats">
+            <div><b data-count="9">0</b><span class="mono">Sites live</span></div>
+            <div><b data-count="100" data-suffix="%">0</b><span class="mono">Hand-coded</span></div>
+            <div><b data-count="0">0</b><span class="mono">Templates used</span></div>
+          </div>
+          <div class="manifesto__aside">
+            <p data-fade>A small senior team on purpose. No account managers, no hand-offs to juniors — you talk to the people doing the work, and you hear back the same day.</p>
+            <div class="manifesto__cta" data-fade>
+              <a class="btn" href="#contact" data-scramble>Tell us about it</a>
+              <a class="link" href="#process" data-scramble>How we work</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section class="services t-blue" id="services" data-label="Services">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="h2" data-lines>Web design<br />&amp; <span class="hl">development.</span></h2>
+          <p class="sec-head__p" data-fade>That’s the whole list. From the first wireframe to the last line of code, one team designs it and the same team builds it.</p>
+        </div>
+        <div class="services__grid">
+          <article class="svc">
+            <canvas class="svc__icon" data-icon="grid" width="40" height="40"></canvas>
+            <h3>Web design</h3>
+            <p>Interfaces that feel inevitable. From sitemap and wireframes to a high-fidelity prototype you can click.</p>
+            <ul class="mono">
+              <li><a href="#contact"><span data-scramble>UI / UX design</span><i>↗</i></a></li>
+              <li><a href="#contact"><span data-scramble>Prototyping</span><i>↗</i></a></li>
+              <li><a href="#contact"><span data-scramble>Redesigns</span><i>↗</i></a></li>
+            </ul>
+          </article>
+          <article class="svc">
+            <canvas class="svc__icon" data-icon="code" width="40" height="40"></canvas>
+            <h3>Web development</h3>
+            <p>Hand-written front ends, built to the pixel and fast by default. Scroll stories and 3D when they earn it.</p>
+            <ul class="mono">
+              <li><a href="#contact"><span data-scramble>Marketing sites</span><i>↗</i></a></li>
+              <li><a href="#contact"><span data-scramble>Web animation</span><i>↗</i></a></li>
+              <li><a href="#contact"><span data-scramble>WebGL &amp; 3D</span><i>↗</i></a></li>
+            </ul>
+          </article>
+          <article class="svc">
+            <canvas class="svc__icon" data-icon="cart" width="40" height="40"></canvas>
+            <h3>Stores &amp; CMS</h3>
+            <p>Catalogues, shops and content your team can update themselves, without calling us every week.</p>
+            <ul class="mono">
+              <li><a href="#contact"><span data-scramble>E-commerce</span><i>↗</i></a></li>
+              <li><a href="#contact"><span data-scramble>Headless CMS</span><i>↗</i></a></li>
+              <li><a href="#contact"><span data-scramble>Landing pages</span><i>↗</i></a></li>
+            </ul>
+          </article>
+          <article class="svc">
+            <canvas class="svc__icon" data-icon="gauge" width="40" height="40"></canvas>
+            <h3>Launch &amp; care</h3>
+            <p>We ship it, measure it and keep it quick. Search, speed and accessibility checked before and after launch.</p>
+            <ul class="mono">
+              <li><a href="#contact"><span data-scramble>SEO &amp; performance</span><i>↗</i></a></li>
+              <li><a href="#contact"><span data-scramble>Accessibility</span><i>↗</i></a></li>
+              <li><a href="#contact"><span data-scramble>Hosting &amp; upkeep</span><i>↗</i></a></li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Work -->
+    <section class="work t-white" id="work" data-label="Selected work">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="h2" data-lines>Selected work,<br />in <span class="hl">broad daylight.</span></h2>
+          <p class="sec-head__p" data-fade>Client work and concepts, each designed and built end to end and live right now. Hover a cover to see it drawn in bits, or click through to the real site.</p>
+        </div>
+        <div class="work__list" id="workList" data-view="grid"></div>
+        <div class="work__more"><a class="btn" href="https://github.com/shahamck" target="_blank" rel="noopener" data-scramble>More on GitHub ↗</a><a class="link" href="#contact" data-scramble>Your project next?</a></div>
+      </div>
+      <div class="view-toggle mono" id="viewToggle" role="group" aria-label="Project view">
+        <button type="button" class="is-on" data-view="grid" aria-pressed="true"><i class="ico-grid"></i>Grid</button>
+        <button type="button" data-view="list" aria-pressed="false"><i class="ico-list"></i>List</button>
+      </div>
+      <div class="peek" id="peek" aria-hidden="true"></div>
+    </section>
+
+    <!-- Process -->
+    <section class="process t-blue" id="process" data-label="Process">
+      <div class="wrap process__grid">
+        <div class="process__head">
+          <h2 class="h2" data-lines>How the work<br /><span class="hl">gets made.</span></h2>
+          <p data-fade>Four phases, one team, no surprises. Most projects run eight to fourteen weeks from kickoff to launch.</p>
+          <div class="process__meter" aria-hidden="true"><i id="processMeter"></i></div>
+        </div>
+        <ol class="process__steps">
+          <li class="step">
+            <span class="step__n" data-num="01">01</span>
+            <div><h3>Listen</h3><p class="mono step__t">Week 1–2</p><p>Workshops, audits and a lot of questions. We leave with a one-page brief everyone signs off on.</p></div>
+          </li>
+          <li class="step">
+            <span class="step__n" data-num="02">02</span>
+            <div><h3>Shape</h3><p class="mono step__t">Week 2–5</p><p>Identity, structure and a high-fidelity prototype you can click through on your own phone.</p></div>
+          </li>
+          <li class="step">
+            <span class="step__n" data-num="03">03</span>
+            <div><h3>Build</h3><p class="mono step__t">Week 5–11</p><p>Hand-coded, reviewed weekly on a live staging link. Content goes in early, not the night before.</p></div>
+          </li>
+          <li class="step">
+            <span class="step__n" data-num="04">04</span>
+            <div><h3>Launch &amp; tend</h3><p class="mono step__t">Week 12 →</p><p>We ship, measure and keep tuning. Search, speed and the small details that compound.</p></div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="voices t-white" id="voices" data-label="Kind words">
+      <div class="wrap voices__grid">
+        <h2 class="h2" data-lines>Kind words,<br /><span class="hl">unprompted.</span></h2>
+        <div class="voices__body">
+          <div class="voices__bar">
+            <div class="voices__tabs mono" role="tablist">
+              <button type="button" role="tab" class="is-on" data-tab="clients" aria-selected="true">Clients <sup>3</sup></button>
+              <button type="button" role="tab" data-tab="partners" aria-selected="false">Partners <sup>2</sup></button>
+            </div>
+            <div class="voices__arrows">
+              <button type="button" id="vPrev" aria-label="Previous quote">←</button>
+              <button type="button" id="vNext" aria-label="Next quote">→</button>
+            </div>
+          </div>
+          <blockquote class="voices__quote" id="vQuote" aria-live="polite"></blockquote>
+          <div class="voices__who" id="vWho"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Contact / footer -->
+  <footer class="contact t-blue" id="contact" data-label="Contact">
+    <div class="wrap">
+      <h2 class="contact__title" data-lines>Let’s make something<br />worth <span class="hl">remembering.</span></h2>
+      <div class="contact__grid">
+        <div class="contact__info">
+          <button class="contact__mail" id="copyMail" type="button" data-email="hello@b1t.studio">hello@b1t.studio<span class="mono contact__copied" id="copied">Copy</span></button>
+          <p class="contact__line">Working remotely, worldwide.<br />Replies within one working day.</p>
+        </div>
+        <form class="brief" id="brief">
+          <p class="mono brief__k">I’m interested in</p>
+          <div class="brief__chips" id="chips">
+            <button type="button" class="chip mono">New website</button>
+            <button type="button" class="chip mono">Redesign</button>
+            <button type="button" class="chip mono">Web design only</button>
+            <button type="button" class="chip mono">Development only</button>
+            <button type="button" class="chip mono">E-commerce</button>
+            <button type="button" class="chip mono">Landing page</button>
+            <button type="button" class="chip mono">Web animation</button>
+            <button type="button" class="chip mono">WebGL &amp; 3D</button>
+            <button type="button" class="chip mono">SEO &amp; performance</button>
+          </div>
+          <p class="mono brief__k">Budget</p>
+          <div class="brief__chips" id="budget">
+            <button type="button" class="chip mono">&lt; 10k</button>
+            <button type="button" class="chip mono">10–25k</button>
+            <button type="button" class="chip mono">25–60k</button>
+            <button type="button" class="chip mono">60k +</button>
+          </div>
+          <label class="brief__field"><span class="mono brief__k">A line or two about it</span>
+            <textarea id="briefMsg" rows="2" placeholder="We’re launching…"></textarea>
+          </label>
+          <button class="btn btn--solid" type="submit" data-scramble>Send the brief</button>
+        </form>
+      </div>
+    </div>
+    <canvas class="contact__word" id="footWord" aria-label="B1T"></canvas>
+    <div class="wrap contact__base mono">
+      <span>© 2026 B1T Studios</span>
+      <span>Web design &amp; development</span>
+      <a href="#top" data-scramble>Back to top ↑</a>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
